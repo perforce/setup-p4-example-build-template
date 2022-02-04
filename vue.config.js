@@ -1,7 +1,7 @@
 const path = require('path');
 
 module.exports = {
-	publicPath: '/three-viewer',
+	publicPath: '.',
 	chainWebpack: config => {
 		config.module
 			.rule('raw')
