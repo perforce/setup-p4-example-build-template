@@ -17,8 +17,13 @@ jobs:
       P4USER: ${{ secrets.P4USER }}
 
     steps:
-      - name: Checkout
+      - name: Checkout private action
         uses: actions/checkout@v2
+        with:
+          repository: perforce/github-actions-p4
+          ref: master
+          token: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
+          path: ./.github/actions/github-actions-p4
 
       - name: p4 login
         uses: perforce/p4-github-actions@master
