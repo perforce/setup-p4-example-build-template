@@ -21,7 +21,10 @@
 							</label>
 						</div>
 						<div class="uploadBtn" @click='loadDefaultModel'>
-							<span>Defalut(3.5MB)</span>
+							<span>Default(3.5MB)</span>
+						</div>
+						<div class="uploadBtn" @click='loadP4Model'>
+							<span>P4 asset (~5MB)</span>
 						</div>
 					</div>
 				</div>
@@ -71,6 +74,13 @@ export default {
 			let loader = new Loader();
 			this.openImportPage = false;
 			loader.loadGLTF('./assets/models/damagedHelmet/').then(gltf => {
+				this.initScene(gltf);
+			})
+		},
+    loadP4Model(){
+			let loader = new Loader();
+			this.openImportPage = false;
+			loader.loadGLTF('./assets/models/ship_dark/').then(gltf => {
 				this.initScene(gltf);
 			})
 		}
@@ -148,7 +158,7 @@ body {
 		right: 5%;
 		bottom: 5%;
 		border: 3px dashed #e6e6e6;
-		color: #cccccc;
+		//color: #cccccc;
 		text-align: center;
 	}
 	.innerArea{
