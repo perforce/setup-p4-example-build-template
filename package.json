@@ -4,8 +4,8 @@
   "author": "todaylg",
   "scripts": {
     "dev": "npm run serve",
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
+    "serve": "./node_modules/.bin/vue-cli-service serve",
+    "build": "./node_modules/.bin/vue-cli-service build",
     "deploy": "npm run build && gh-pages -d dist"
   },
   "dependencies": {
