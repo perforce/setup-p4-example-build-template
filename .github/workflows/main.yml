@@ -61,7 +61,7 @@ jobs:
               //Game/demactions/checkouto/... //github-actions-p4/Game/demo/...
 
       - name: p4 sync
-        uses: perforce/github-actions-p4@v1
+        uses: perforce/github-actions-p4@master
         id: sync
         env:
           P4CLIENT: github-actions-p4
