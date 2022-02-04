@@ -26,7 +26,7 @@ jobs:
           path: ./.github/actions/github-actions-p4
 
       - name: p4 login
-        uses: perforce/p4-github-actions@master
+        uses: ./.github/actions/github-actions-p4
         id: login
         with:
           command: login
@@ -35,13 +35,13 @@ jobs:
           P4PASSWD: ${{ secrets.P4PASSWD }}
 
       - name: p4 depots
-        uses: perforce/p4-github-actions@master
+        uses: ./.github/actions/github-actions-p4
         id: depots
         with:
           command: depots
 
       - name: p4 client
-        uses: perforce/p4-github-actions@master
+        uses: ./.github/actions/github-actions-p4
         id: client
         with:
           command: client
@@ -66,7 +66,7 @@ jobs:
               //Game/demactions/checkouto/... //github-actions-p4/Game/demo/...
 
       - name: p4 sync
-        uses: perforce/p4-github-actions@master
+        uses: ./.github/actions/github-actions-p4
         id: sync
         env:
           P4CLIENT: github-actions-p4
