@@ -21,7 +21,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: p4 login
-        uses: perforce/github-actions-p4
+        uses: perforce/p4-github-actions@master
         id: login
         with:
           command: login
@@ -30,13 +30,13 @@ jobs:
           P4PASSWD: ${{ secrets.P4PASSWD }}
 
       - name: p4 depots
-        uses: perforce/github-actions-p4
+        uses: perforce/p4-github-actions@master
         id: depots
         with:
           command: depots
 
       - name: p4 client
-        uses: perforce/github-actions-p4
+        uses: perforce/p4-github-actions@master
         id: client
         with:
           command: client
