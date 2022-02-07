@@ -78,8 +78,14 @@ jobs:
 
       - name: Run build script
         run: |
-          mkdir -p $GITHUB_WORKSPACE/public/assets/models/
-          ln -s /home/runner/work/_temp/_github_home/Game/assets/ship $GITHUB_WORKSPACE/public/assets/models/ship_dark
+          mkdir -p $GITHUB_WORKSPACE/public/assets/models/ship_dark
+          mkdir -p $GITHUB_WORKSPACE/public/assets/models/ship_light
+          # ln -s /home/runner/work/_temp/_github_home/Game/assets/ship $GITHUB_WORKSPACE/public/assets/models/ship_dark
+          cp /home/runner/work/_temp/_github_home/Game/assets/ship/ship_dark.bin $GITHUB_WORKSPACE/public/assets/models/ship_dark/ship_dark.bin
+          cp /home/runner/work/_temp/_github_home/Game/assets/ship/ship_dark.gltf $GITHUB_WORKSPACE/public/assets/models/ship_dark/ship_dark.gltf
+
+          cp /home/runner/work/_temp/_github_home/Game/assets/ship/ship_light.bin $GITHUB_WORKSPACE/public/assets/models/ship_dark/ship_light.bin
+          cp /home/runner/work/_temp/_github_home/Game/assets/ship/ship_light.gltf $GITHUB_WORKSPACE/public/assets/models/ship_dark/ship_light.gltf
 
       - uses: actions/setup-node@v2
         with:

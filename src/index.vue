@@ -23,8 +23,11 @@
 						<div class="uploadBtn" @click='loadDefaultModel'>
 							<span>Default(3.5MB)</span>
 						</div>
-						<div class="uploadBtn" @click='loadP4Model'>
-							<span>P4 asset (~5MB)</span>
+						<div class="uploadBtn" @click='loadP4ModelDark'>
+							<span>P4 asset Ship Dark(~5MB)</span>
+						</div>
+						<div class="uploadBtn" @click='loadP4ModelLight'>
+							<span>P4 asset Ship Light(~5MB)</span>
 						</div>
 					</div>
 				</div>
@@ -77,10 +80,17 @@ export default {
 				this.initScene(gltf);
 			})
 		},
-    loadP4Model(){
+    	loadP4ModelDark(){
 			let loader = new Loader();
 			this.openImportPage = false;
 			loader.loadGLTF('./assets/models/ship_dark/').then(gltf => {
+				this.initScene(gltf);
+			})
+		},
+    	loadP4ModelLight(){
+			let loader = new Loader();
+			this.openImportPage = false;
+			loader.loadGLTF('./assets/models/ship_light/').then(gltf => {
 				this.initScene(gltf);
 			})
 		}
