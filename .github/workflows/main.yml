@@ -9,6 +9,10 @@ on:
   # pull_request:
   #   branches: [main]
 
+env:
+  P4PORT: ${{ secrets.P4PORT }}
+  P4USER: ${{ secrets.P4USER }}
+
 jobs:
   get-p4-content:
     runs-on: ubuntu-latest
@@ -17,11 +21,11 @@ jobs:
       P4USER: ${{ secrets.P4USER }}
 
     steps:
+
       - name: Checkout private action
         uses: actions/checkout@v2
         with:
           repository: perforce/github-actions-p4
-          ref: master
           token: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
           path: ./.github/actions/github-actions-p4
 
@@ -29,16 +33,9 @@ jobs:
         uses: ./.github/actions/github-actions-p4
         id: login
         with:
-          command: login
-          global_options: "-p ${{ secrets.P4PORT }} -u ${{ secrets.P4USER }}"
+          command: login          
         env:
           P4PASSWD: ${{ secrets.P4PASSWD }}
-
-      - name: p4 depots
-        uses: ./.github/actions/github-actions-p4
-        id: depots
-        with:
-          command: depots
 
       - name: p4 client
         uses: ./.github/actions/github-actions-p4
@@ -48,22 +45,15 @@ jobs:
           arguments: -i
           spec: |
             Client:	github-actions-p4
-
-            Owner: ${{ secrets.P4USER }}
-
+            Owner: ci
             Description:
-              Created by ${{ secrets.P4USER }}.
-
+              Created by ci
             Root:	/tmp
-
             Options:	noallwrite noclobber nocompress unlocked modtime rmdir
-
             SubmitOptions:	leaveunchanged
-
             LineEnd:	local
-
             View:
-              //Game/demactions/checkouto/... //github-actions-p4/Game/demo/...
+              //Game/assets/... //github-actions-p4/Game/assets/...
 
       - name: p4 sync
         uses: ./.github/actions/github-actions-p4
@@ -73,9 +63,12 @@ jobs:
         with:
           command: sync
           arguments: -f
+
       - name: Run build script
-        run: ./.github/scripts/copy.sh
-        shell: bash
+        run: |
+          echo "this is the build step..."
+          mkdir -p public/assets/ship/
+          mv /tmp/Game/assets/* public/assets/ship/
 
   build-and-deploy:
     concurrency: ci-${{ github.ref }} # Recommended if you intend to make multiple deployments in quick succession.
