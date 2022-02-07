@@ -85,13 +85,14 @@ jobs:
           echo "this is the build step..."
           # RUNNER_TEMP=/home/runner/work/_temp
           # GITHUB_WORKSPACE=/home/runner/work/github-actions-demo-indie/github-actions-demo-indie
-          cd $GITHUB_WORKSPACE
           pwd
           ls -la
-
-
-
           mkdir -p public/assets/ship/
+
+          ls -la $RUNNER_TEMP/
+          ls -la $RUNNER_TEMP/Game
+          ls -la $RUNNER_TEMP/Game/assets/
+          tree $RUNNER_TEMP
           #turn this into a symlink
           mv $RUNNER_TEMP/Game/assets/ship/* public/assets/ship/
 
