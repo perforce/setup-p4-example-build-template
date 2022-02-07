@@ -85,7 +85,7 @@ jobs:
           # /home/runner/work/github-actions-demo-indie/github-actions-demo-indie/public/assets/Game/assets/ship/ship_wreck.bin
           # /home/runner/work/github-actions-demo-indie/github-actions-demo-indie/public/assets/ship/
 
-          lss -la /github/workspace/
+          ls -la /github/workspace/
           
           ls -la $GITHUB_WORKSPACE/public/
           ls -la $GITHUB_WORKSPACE/public/assets/
