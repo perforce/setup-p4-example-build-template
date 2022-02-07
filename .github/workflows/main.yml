@@ -78,19 +78,8 @@ jobs:
 
       - name: Run build script
         run: |
-
-          echo "this is the build step..."
-          # RUNNER_TEMP=/home/runner/work/_temp
-          # GITHUB_WORKSPACE=/home/runner/work/github-actions-demo-indie/github-actions-demo-indie
-
-          # /home/runner/work/github-actions-demo-indie/github-actions-demo-indie/public/assets/Game/assets/ship/ship_wreck.bin
-          # /home/runner/work/github-actions-demo-indie/github-actions-demo-indie/public/assets/ship/
-
-          ls -la /home/runner/work/_temp/_github_home/Game/assets
-
-          mkdir -p $GITHUB_WORKSPACE/public/assets/ship/
-
-          ln -s /home/runner/work/_temp/_github_home/Game/assets/ship $GITHUB_WORKSPACE/public/assets/ship/
+          mkdir -p $GITHUB_WORKSPACE/public/assets/models/
+          ln -s /home/runner/work/_temp/_github_home/Game/assets/ship $GITHUB_WORKSPACE/public/assets/models/ship_dark
 
       - uses: actions/setup-node@v2
         with:
