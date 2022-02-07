@@ -73,9 +73,12 @@ jobs:
 
       - name: Run build script
         run: |
+
           echo "this is the build step..."
+          pwd
+          ls -la /tmp
           mkdir -p public/assets/ship/
-          mv /tmp/Game/assets/* public/assets/ship/
+          mv /tmp/Game/assets/ship/* public/assets/ship/
 
       - uses: actions/setup-node@v2
         with:
