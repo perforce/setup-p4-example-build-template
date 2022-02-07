@@ -69,7 +69,6 @@ jobs:
       - name: p4 sync
         uses: ./.github/actions/github-actions-p4
         id: sync
-        # options: -v ${{ github.workspace }}:/work 
         env:
           P4CLIENT: github-actions-p4
         with:
@@ -80,11 +79,11 @@ jobs:
         run: |
           mkdir -p $GITHUB_WORKSPACE/public/assets/models/ship_dark
           mkdir -p $GITHUB_WORKSPACE/public/assets/models/ship_light
-          # ln -s /home/runner/work/_temp/_github_home/Game/assets/ship $GITHUB_WORKSPACE/public/assets/models/ship_dark
-          cp /home/runner/work/_temp/_github_home/Game/assets/ship/ship_dark.bin $GITHUB_WORKSPACE/public/assets/models/ship_dark/scene.bin
+
+          cp /home/runner/work/_temp/_github_home/Game/assets/ship/ship_dark.bin $GITHUB_WORKSPACE/public/assets/models/ship_dark/ship_dark.bin
           cp /home/runner/work/_temp/_github_home/Game/assets/ship/ship_dark.gltf $GITHUB_WORKSPACE/public/assets/models/ship_dark/scene.gltf
 
-          cp /home/runner/work/_temp/_github_home/Game/assets/ship/ship_light.bin $GITHUB_WORKSPACE/public/assets/models/ship_light/scene.bin
+          cp /home/runner/work/_temp/_github_home/Game/assets/ship/ship_light.bin $GITHUB_WORKSPACE/public/assets/models/ship_light/ship_light.bin
           cp /home/runner/work/_temp/_github_home/Game/assets/ship/ship_light.gltf $GITHUB_WORKSPACE/public/assets/models/ship_light/scene.gltf
 
       - uses: actions/setup-node@v2
@@ -97,8 +96,8 @@ jobs:
       - name: Deploy
         uses: JamesIves/github-pages-deploy-action@v4.2.3
         with:
-          branch: gh-pages # The branch the action should deploy to.
-          folder: dist # The folder the action should deploy.
+          branch: gh-pages
+          folder: dist
 
 
 
