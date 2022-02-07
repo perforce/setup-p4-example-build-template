@@ -47,10 +47,6 @@ jobs:
         env:
           P4PASSWD: ${{ secrets.P4PASSWD }}
 
-      - name: Create p4 root
-        run: |
-
-          mkdir -p ~/.tmp/
 
       - name: p4 client
         uses: ./.github/actions/github-actions-p4
@@ -63,7 +59,7 @@ jobs:
             Owner: ci
             Description:
               Created by ci
-            Root:	/home/runner/work/_temp
+            Root:	$GITHUB_WORKSPACE/public/assets/
             Options:	noallwrite noclobber nocompress unlocked modtime rmdir
             SubmitOptions:	leaveunchanged
             LineEnd:	local
@@ -85,16 +81,13 @@ jobs:
           echo "this is the build step..."
           # RUNNER_TEMP=/home/runner/work/_temp
           # GITHUB_WORKSPACE=/home/runner/work/github-actions-demo-indie/github-actions-demo-indie
-          pwd
-          ls -la
-          mkdir -p public/assets/ship/
+          
+          ls -la $GITHUB_WORKSPACE/public/
+          ls -la $GITHUB_WORKSPACE/public/assets/
+          ls -la $GITHUB_WORKSPACE/public/assets/ship/
+          ls -l
+          
 
-          ls -la $RUNNER_TEMP/
-          ls -la $RUNNER_TEMP/Game
-          ls -la $RUNNER_TEMP/Game/assets/
-          tree $RUNNER_TEMP
-          #turn this into a symlink
-          mv $RUNNER_TEMP/Game/assets/ship/* public/assets/ship/
 
       - uses: actions/setup-node@v2
         with:
