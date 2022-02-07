@@ -44,6 +44,11 @@ jobs:
         env:
           P4PASSWD: ${{ secrets.P4PASSWD }}
 
+      - name: Create p4 root
+        run: |
+
+          mkdir -p ~/.tmp/
+
       - name: p4 client
         uses: ./.github/actions/github-actions-p4
         id: client
@@ -55,7 +60,7 @@ jobs:
             Owner: ci
             Description:
               Created by ci
-            Root:	/tmp
+            Root:	~/.tmp
             Options:	noallwrite noclobber nocompress unlocked modtime rmdir
             SubmitOptions:	leaveunchanged
             LineEnd:	local
@@ -76,7 +81,7 @@ jobs:
 
           echo "this is the build step..."
           pwd
-          ls -la /tmp
+          ls -la
           mkdir -p public/assets/ship/
           mv /tmp/Game/assets/ship/* public/assets/ship/
 
