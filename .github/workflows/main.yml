@@ -80,8 +80,6 @@ jobs:
         run: |
           mkdir -p $GITHUB_WORKSPACE/public/assets/models/
           ln -s /home/runner/work/_temp/_github_home/Game/assets/ship $GITHUB_WORKSPACE/public/assets/models/ship_dark
-          mv /home/runner/work/_temp/_github_home/Game/assets/ship/ship_dark.bin /home/runner/work/_temp/_github_home/Game/assets/ship/scene.bin
-          mv /home/runner/work/_temp/_github_home/Game/assets/ship/ship_dark.gltf /home/runner/work/_temp/_github_home/Game/assets/ship/scene.gltf
 
       - uses: actions/setup-node@v2
         with:
