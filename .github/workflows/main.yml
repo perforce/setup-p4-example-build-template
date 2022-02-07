@@ -10,6 +10,73 @@ on:
   #   branches: [main]
 
 jobs:
+  get-p4-content:
+    runs-on: ubuntu-latest
+    name: Get P4 Content
+    env:
+      P4USER: ${{ secrets.P4USER }}
+
+    steps:
+      - name: Checkout private action
+        uses: actions/checkout@v2
+        with:
+          repository: perforce/github-actions-p4
+          ref: master
+          token: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
+          path: ./.github/actions/github-actions-p4
+
+      - name: p4 login
+        uses: ./.github/actions/github-actions-p4
+        id: login
+        with:
+          command: login
+          global_options: "-p ${{ secrets.P4PORT }} -u ${{ secrets.P4USER }}"
+        env:
+          P4PASSWD: ${{ secrets.P4PASSWD }}
+
+      - name: p4 depots
+        uses: ./.github/actions/github-actions-p4
+        id: depots
+        with:
+          command: depots
+
+      - name: p4 client
+        uses: ./.github/actions/github-actions-p4
+        id: client
+        with:
+          command: client
+          arguments: -i
+          spec: |
+            Client:	github-actions-p4
+
+            Owner: ${{ secrets.P4USER }}
+
+            Description:
+              Created by ${{ secrets.P4USER }}.
+
+            Root:	/tmp
+
+            Options:	noallwrite noclobber nocompress unlocked modtime rmdir
+
+            SubmitOptions:	leaveunchanged
+
+            LineEnd:	local
+
+            View:
+              //Game/demactions/checkouto/... //github-actions-p4/Game/demo/...
+
+      - name: p4 sync
+        uses: ./.github/actions/github-actions-p4
+        id: sync
+        env:
+          P4CLIENT: github-actions-p4
+        with:
+          command: sync
+          arguments: -f
+      - name: Run build script
+        run: ./.github/scripts/copy.sh
+        shell: bash
+
   build-and-deploy:
     concurrency: ci-${{ github.ref }} # Recommended if you intend to make multiple deployments in quick succession.
     runs-on: ubuntu-latest
