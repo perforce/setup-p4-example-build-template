@@ -59,7 +59,7 @@ jobs:
             Owner: ci
             Description:
               Created by ci
-            Root:	$GITHUB_WORKSPACE/public/assets/
+            Root:	/home/runner/work/github-actions-demo-indie/github-actions-demo-indie/public/assets/
             Options:	noallwrite noclobber nocompress unlocked modtime rmdir
             SubmitOptions:	leaveunchanged
             LineEnd:	local
