@@ -83,7 +83,8 @@ jobs:
           pwd
           ls -la
           mkdir -p public/assets/ship/
-          mv /tmp/Game/assets/ship/* public/assets/ship/
+          #turn this into a symlink
+          mv ~/.tmp/Game/assets/ship/* public/assets/ship/
 
       - uses: actions/setup-node@v2
         with:
