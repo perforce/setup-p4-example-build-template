@@ -29,6 +29,13 @@ jobs:
           token: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
           path: ./.github/actions/github-actions-p4
 
+      - name: p4 trust
+        uses: ./.github/actions/github-actions-p4
+        id: trust
+        with:
+          command: trust
+          arguments: -y
+
       - name: p4 login
         uses: ./.github/actions/github-actions-p4
         id: login
@@ -70,21 +77,9 @@ jobs:
           mkdir -p public/assets/ship/
           mv /tmp/Game/assets/* public/assets/ship/
 
-  build-and-deploy:
-    concurrency: ci-${{ github.ref }} # Recommended if you intend to make multiple deployments in quick succession.
-    runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        node-version: [14.14.0]
-
-    # Steps represent a sequence of tasks that will be executed as part of the job
-    steps:
-      - uses: actions/checkout@v2
-        name: Use Node.js ${{ matrix.node-version }}
       - uses: actions/setup-node@v2
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: 14.14.0
       - name: Install dependencies
         run: |
           yarn
@@ -94,3 +89,7 @@ jobs:
         with:
           branch: gh-pages # The branch the action should deploy to.
           folder: dist # The folder the action should deploy.
+
+
+
+
