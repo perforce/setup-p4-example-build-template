@@ -88,6 +88,8 @@ jobs:
 
           ls -la /home/runner/work/_temp/_github_home/Game/assets
 
+          mkdir -p $GITHUB_WORKSPACE/public/assets/ship/
+
           ln -s /home/runner/work/_temp/_github_home/Game/assets/ship $GITHUB_WORKSPACE/public/assets/ship/
 
       - uses: actions/setup-node@v2
