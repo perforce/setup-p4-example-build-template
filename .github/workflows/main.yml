@@ -81,11 +81,16 @@ jobs:
           echo "this is the build step..."
           # RUNNER_TEMP=/home/runner/work/_temp
           # GITHUB_WORKSPACE=/home/runner/work/github-actions-demo-indie/github-actions-demo-indie
+
+          # /home/runner/work/github-actions-demo-indie/github-actions-demo-indie/public/assets/Game/assets/ship/ship_wreck.bin
+          # /home/runner/work/github-actions-demo-indie/github-actions-demo-indie/public/assets/ship/
+
+          lss -la /github/workspace/
           
           ls -la $GITHUB_WORKSPACE/public/
           ls -la $GITHUB_WORKSPACE/public/assets/
           ls -la $GITHUB_WORKSPACE/public/assets/ship/
-          ls -l
+          
           
 
 
