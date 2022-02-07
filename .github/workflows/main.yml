@@ -59,7 +59,7 @@ jobs:
             Owner: ci
             Description:
               Created by ci
-            Root:	/home/runner/work/github-actions-demo-indie/github-actions-demo-indie/public/assets/
+            Root:	/github/home/
             Options:	noallwrite noclobber nocompress unlocked modtime rmdir
             SubmitOptions:	leaveunchanged
             LineEnd:	local
@@ -69,6 +69,7 @@ jobs:
       - name: p4 sync
         uses: ./.github/actions/github-actions-p4
         id: sync
+        # options: -v ${{ github.workspace }}:/work 
         env:
           P4CLIENT: github-actions-p4
         with:
@@ -84,6 +85,8 @@ jobs:
 
           # /home/runner/work/github-actions-demo-indie/github-actions-demo-indie/public/assets/Game/assets/ship/ship_wreck.bin
           # /home/runner/work/github-actions-demo-indie/github-actions-demo-indie/public/assets/ship/
+
+          ls -la /home/runner/work/_temp/_github_home
 
           ls -la /github/workspace/
           
