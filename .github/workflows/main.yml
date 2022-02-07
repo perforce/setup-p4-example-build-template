@@ -80,6 +80,8 @@ jobs:
         run: |
 
           echo "this is the build step..."
+          env
+          echo "end of env"
           pwd
           ls -la
           mkdir -p public/assets/ship/
