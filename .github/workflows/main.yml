@@ -86,16 +86,9 @@ jobs:
           # /home/runner/work/github-actions-demo-indie/github-actions-demo-indie/public/assets/Game/assets/ship/ship_wreck.bin
           # /home/runner/work/github-actions-demo-indie/github-actions-demo-indie/public/assets/ship/
 
-          ls -la /home/runner/work/_temp/_github_home
+          ls -la /home/runner/work/_temp/_github_home/Game/assets
 
-          ls -la /github/workspace/
-          
-          ls -la $GITHUB_WORKSPACE/public/
-          ls -la $GITHUB_WORKSPACE/public/assets/
-          ls -la $GITHUB_WORKSPACE/public/assets/ship/
-          
-          
-
+          ln -s /home/runner/work/_temp/_github_home/Game/assets/ship $GITHUB_WORKSPACE/public/assets/ship/
 
       - uses: actions/setup-node@v2
         with:
