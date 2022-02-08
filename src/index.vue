@@ -28,11 +28,11 @@
 							<span>P4 asset Ship Dark (~5MB)</span>
 						</div>
 
-<!---
+
 						<div class="uploadBtn" @click='loadP4ModelLight'>
 							<span>P4 asset Ship Wreck (~5MB)</span>
 						</div>
---->	
+	
 
 					</div>
 				</div>
