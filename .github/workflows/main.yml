@@ -44,8 +44,7 @@ jobs:
           command: login          
         env:
           P4PASSWD: ${{ secrets.P4PASSWD }}
-
-
+          
       - name: p4 client
         uses: ./.github/actions/github-actions-p4
         id: client
@@ -62,7 +61,7 @@ jobs:
             SubmitOptions:	leaveunchanged
             LineEnd:	local
             View:
-              //Game/assets/... //github-actions-p4/Game/assets/...
+              //demo/assets/... //github-actions-p4/demo/assets/...
 
       - name: p4 sync
         uses: ./.github/actions/github-actions-p4
@@ -78,14 +77,14 @@ jobs:
           mkdir -p $GITHUB_WORKSPACE/public/assets/models/ship_dark
           mkdir -p $GITHUB_WORKSPACE/public/assets/models/ship_light
 
-          cp /home/runner/work/_temp/_github_home/Game/assets/ship/ship_dark.bin $GITHUB_WORKSPACE/public/assets/models/ship_dark/ship_dark.bin
-          cp /home/runner/work/_temp/_github_home/Game/assets/ship/ship_dark.gltf $GITHUB_WORKSPACE/public/assets/models/ship_dark/scene.gltf
+          cp /home/runner/work/_temp/_github_home/demo/assets/ship/ship_dark.bin $GITHUB_WORKSPACE/public/assets/models/ship_dark/ship_dark.bin
+          cp /home/runner/work/_temp/_github_home/demo/assets/ship/ship_dark.gltf $GITHUB_WORKSPACE/public/assets/models/ship_dark/scene.gltf
 
-          # cp /home/runner/work/_temp/_github_home/Game/assets/ship/ship_light.bin $GITHUB_WORKSPACE/public/assets/models/ship_light/ship_light.bin
-          # cp /home/runner/work/_temp/_github_home/Game/assets/ship/ship_light.gltf $GITHUB_WORKSPACE/public/assets/models/ship_light/scene.gltf
+          # cp /home/runner/work/_temp/_github_home/demo/assets/ship/ship_light.bin $GITHUB_WORKSPACE/public/assets/models/ship_light/ship_light.bin
+          # cp /home/runner/work/_temp/_github_home/demo/assets/ship/ship_light.gltf $GITHUB_WORKSPACE/public/assets/models/ship_light/scene.gltf
 
-          cp /home/runner/work/_temp/_github_home/Game/assets/ship/ship_wreck.bin $GITHUB_WORKSPACE/public/assets/models/ship_light/ship_wreck.bin
-          cp /home/runner/work/_temp/_github_home/Game/assets/ship/ship_wreck.gltf $GITHUB_WORKSPACE/public/assets/models/ship_light/scene.gltf
+          cp /home/runner/work/_temp/_github_home/demo/assets/ship/ship_wreck.bin $GITHUB_WORKSPACE/public/assets/models/ship_light/ship_wreck.bin
+          cp /home/runner/work/_temp/_github_home/demo/assets/ship/ship_wreck.gltf $GITHUB_WORKSPACE/public/assets/models/ship_light/scene.gltf
 
       - uses: actions/setup-node@v2
         with:
