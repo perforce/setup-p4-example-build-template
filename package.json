@@ -1,7 +1,7 @@
 {
-  "name": "three-viewer",
-  "version": "0.0.1",
-  "author": "todaylg",
+  "name": "helix-core-github",
+  "version": "0.0.2",
+  "author": "Perforce",
   "scripts": {
     "dev": "npm run serve",
     "serve": "./node_modules/.bin/vue-cli-service serve",

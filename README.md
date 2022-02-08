@@ -1,4 +1,4 @@
-# three-viewer
+# helix-core-github demo (inspired by three-viewer)
 
 PBR rendering experiment of a single model, convenient comparison of rendering equations, based on Threejs and [Envtools](https://github.com/todaylg/envTools)
 
