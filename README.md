@@ -4,7 +4,7 @@
   - [Usage](#usage)
     - [Demo Change](#demo-change)
   - [Source](#source)
-    - [Todo](#todo)
+  - [Todo](#todo)
 
 This project is setup to be a demonstartion of the P4 GitHub Actions (login, client, sync, etc).  The project is based on Three Viewer but has been modified to store the models in Helix core and the web front end code in GitHub.  The pipeline stored in .github will perform the following high level steps:
 
@@ -49,6 +49,13 @@ Out of the box the web front end will have three options
 In a demo there is a quick and easy way to enable a 4th option.  Open src/index.vue and uncomment the div on line 31.  Commit and push this change to the main branch. This will trigger the workflow and publish a new version of the front end to Github Pages. 
 
 
+---
+**NOTE**
+
+After the pipeline finishes it takes about a minute for GitHub Pages to "see" the changes.  
+
+---
+
 
 ## Source
 
@@ -56,24 +63,7 @@ In a demo there is a quick and easy way to enable a 4th option.  Open src/index.
 * [Three Viewer](https://github.com/todaylg/three-viewer)
 
 
-### Todo
+## Todo
 
-- [x] Specular Glossiness Material
+- [ ] 
 
-- [x] Panorama EnvMap(For the devices that dont support lod)
-
-- [x] Fix energy loss in specular reflectance
-  
-- [x] Anisotropy(GGX)
-  
-- [x] Clearcoat
-
-- [ ] Sheen
-
-- [ ] Spot/Point Light and Shadow
-
-- [ ] Post-processing(WIP)
-
-- [ ] Ground Shadow
-
-- [ ] Shadow Jitter
