@@ -1,13 +1,11 @@
 name: Build and Deploy
-# Controls when the workflow will run
+
 on:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
   # Triggers the workflow on push or pull request events but only for the main branch
   push:
     branches: [main]
-  # pull_request:
-  #   branches: [main]
 
 env:
   P4PORT: ${{ secrets.P4PORT }}
@@ -16,7 +14,7 @@ env:
 jobs:
   get-p4-content:
     runs-on: ubuntu-latest
-    name: Get P4 Content
+    name: Build and Deploy
     env:
       P4USER: ${{ secrets.P4USER }}
 
@@ -75,7 +73,7 @@ jobs:
           command: sync
           arguments: -f
 
-      - name: Run build script
+      - name: Run build
         run: |
           mkdir -p $GITHUB_WORKSPACE/public/assets/models/ship_dark
           mkdir -p $GITHUB_WORKSPACE/public/assets/models/ship_light
@@ -92,16 +90,14 @@ jobs:
       - uses: actions/setup-node@v2
         with:
           node-version: 14.14.0
+          
       - name: Install dependencies
         run: |
           yarn
           yarn run build
+
       - name: Deploy
         uses: JamesIves/github-pages-deploy-action@v4.2.3
         with:
           branch: gh-pages
           folder: dist
-
-
-
-
