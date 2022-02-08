@@ -92,10 +92,12 @@ jobs:
       - uses: actions/setup-node@v2
         with:
           node-version: 14.14.0
+          
       - name: Install dependencies
         run: |
           yarn
           yarn run build
+
       - name: Deploy
         uses: JamesIves/github-pages-deploy-action@v4.2.3
         with:
