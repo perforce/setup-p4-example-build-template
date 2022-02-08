@@ -6,7 +6,7 @@
   - [Source](#source)
   - [Todo](#todo)
 
-This project is setup to be a demonstartion of the P4 GitHub Actions (login, client, sync, etc).  The project is based on Three Viewer but has been modified to store the models in Helix core and the web front end code in GitHub.  The pipeline stored in .github will perform the following high level steps:
+This project is setup to be a demonstration of the P4 GitHub Actions (login, client, sync, etc).  The project is based on Three Viewer but has been modified to store the models in Helix core and the web front end code in GitHub.  The pipeline stored in .github will perform the following high level steps:
 
 * checkout github source code
 * login into helix core
@@ -22,7 +22,7 @@ The front end is pre setup to show a single asset from helix core but can be eas
 These are the steps to get this demo running in your own environment
 
 * fork this project
-* create the following GitHub Action Secrets (get the values for the secrest from Andy or Ryan)
+* create the following GitHub Action Secrets (get the values for the secrets from Andy or Ryan)
   * P4PORT
   * P4USER
   * P4PASSWD
@@ -36,7 +36,7 @@ These are the steps to get this demo running in your own environment
   * click save
 * In a new browser tab open the following URL:
   *  https://aboutte.github.io/github-actions-demo-indie/
-  *  change aboutte to your github username (or ogranization name if you forked into an orgaization)
+  *  change aboutte to your github username (or organization name if you forked into an organization)
 
 ### Demo Change
 
@@ -66,4 +66,3 @@ After the pipeline finishes it takes about a minute for GitHub Pages to "see" th
 ## Todo
 
 - [ ] 
-
