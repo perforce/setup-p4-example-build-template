@@ -44,7 +44,9 @@ jobs:
           command: login
         env:
           P4PASSWD: ${{ secrets.P4PASSWD }}
-
+#      - name: envs
+#        run: |
+#          env
       - name: p4 client
         uses: ./.github/actions/github-actions-p4
         id: client
@@ -56,12 +58,16 @@ jobs:
             Owner: ci
             Description:
               Created by ci
-            Root:	/github/home/
-            Options:	noallwrite noclobber nocompress unlocked modtime rmdir
+            Root:	/github/home
+            Options:	allwrite noclobber nocompress unlocked modtime rmdir
             SubmitOptions:	leaveunchanged
             LineEnd:	local
             View:
               //demo/... //github-actions-p4/demo/...
+
+      - name: chmod
+        run: |
+          sudo chmod -R 755 /home/runner/work/_temp/_github_home/
 
       - name: p4 sync
         uses: ./.github/actions/github-actions-p4
@@ -78,12 +84,13 @@ jobs:
 
       - name: Install dependencies
         run: |
-          cd /github/home/demo
-          yarn
-          yarn run build
+          sudo chmod -R 755 /home/runner/work/_temp/_github_home/
+          cd /home/runner/work/_temp/_github_home/demo
+          sudo yarn
+          sudo yarn run build
 
       - name: Deploy
         uses: JamesIves/github-pages-deploy-action@v4.2.3
         with:
           branch: gh-pages
-          folder: dist
+          folder: /home/runner/work/_temp/_github_home/demo/dist
