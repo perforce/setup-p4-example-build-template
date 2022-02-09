@@ -41,10 +41,10 @@ jobs:
         uses: ./.github/actions/github-actions-p4
         id: login
         with:
-          command: login          
+          command: login
         env:
           P4PASSWD: ${{ secrets.P4PASSWD }}
-          
+
       - name: p4 client
         uses: ./.github/actions/github-actions-p4
         id: client
@@ -61,7 +61,7 @@ jobs:
             SubmitOptions:	leaveunchanged
             LineEnd:	local
             View:
-              //demo/assets/... //github-actions-p4/demo/assets/...
+              //demo/... //github-actions-p4/demo/...
 
       - name: p4 sync
         uses: ./.github/actions/github-actions-p4
@@ -75,10 +75,10 @@ jobs:
       - uses: actions/setup-node@v2
         with:
           node-version: 14.14.0
-          
+
       - name: Install dependencies
         run: |
-          cd /home/runner/work/_temp/_github_home/demo
+          cd /github/home/demo
           yarn
           yarn run build
 
