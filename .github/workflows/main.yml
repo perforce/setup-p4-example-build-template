@@ -72,26 +72,13 @@ jobs:
           command: sync
           arguments: -f
 
-      - name: Run build
-        run: |
-          mkdir -p $GITHUB_WORKSPACE/public/assets/models/ship_dark
-          mkdir -p $GITHUB_WORKSPACE/public/assets/models/ship_light
-
-          cp /home/runner/work/_temp/_github_home/demo/assets/ship/ship_dark.bin $GITHUB_WORKSPACE/public/assets/models/ship_dark/ship_dark.bin
-          cp /home/runner/work/_temp/_github_home/demo/assets/ship/ship_dark.gltf $GITHUB_WORKSPACE/public/assets/models/ship_dark/scene.gltf
-
-          # cp /home/runner/work/_temp/_github_home/demo/assets/ship/ship_light.bin $GITHUB_WORKSPACE/public/assets/models/ship_light/ship_light.bin
-          # cp /home/runner/work/_temp/_github_home/demo/assets/ship/ship_light.gltf $GITHUB_WORKSPACE/public/assets/models/ship_light/scene.gltf
-
-          # cp /home/runner/work/_temp/_github_home/demo/assets/ship/ship_wreck.bin $GITHUB_WORKSPACE/public/assets/models/ship_light/ship_wreck.bin
-          # cp /home/runner/work/_temp/_github_home/demo/assets/ship/ship_wreck.gltf $GITHUB_WORKSPACE/public/assets/models/ship_light/scene.gltf
-
       - uses: actions/setup-node@v2
         with:
           node-version: 14.14.0
           
       - name: Install dependencies
         run: |
+          cd /home/runner/work/_temp/_github_home/demo
           yarn
           yarn run build
 
