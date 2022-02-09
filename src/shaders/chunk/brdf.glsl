@@ -1,2 +1,0 @@
-#preImport <isotropyLightCompute>
-#preImport <anisotropyLightCompute>
