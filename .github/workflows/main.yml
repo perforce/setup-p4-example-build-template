@@ -13,7 +13,13 @@ env:
 
 jobs:
   get-p4-content:
-    runs-on: ubuntu-latest
+    # runs-on: [self-hosted, linux]
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-20.04] # these are the github hosted OSes
+        # os: [windows-2019, ubuntu-20.04, ubuntu-18.04, macos-10.15, windows-2022, windows-2016, macos-11] # these are the github hosted OSes
+
     name: Build and Deploy
     env:
       P4USER: ${{ secrets.P4USER }}
@@ -27,53 +33,55 @@ jobs:
         uses: actions/checkout@v2
         with:
           repository: perforce/github-actions-p4
+          ref: js
           token: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
           path: ./.github/actions/github-actions-p4
 
+      - name: p4 setup
+        uses: ./.github/actions/github-actions-p4/js
+        id: setup
+        with:
+          command: setup
+          p4_version: 21.2
+
       - name: p4 trust
-        uses: ./.github/actions/github-actions-p4
+        uses: ./.github/actions/github-actions-p4/js
         id: trust
         with:
           command: trust
           arguments: -y
 
       - name: p4 login
-        uses: ./.github/actions/github-actions-p4
+        uses: ./.github/actions/github-actions-p4/js
         id: login
         with:
-          command: login
+          command: login          
         env:
-          P4PASSWD: ${{ secrets.P4PASSWD }}
-#      - name: envs
-#        run: |
-#          env
+          P4PASSWD: ${{ secrets.P4PASSWD }}  
+
       - name: p4 client
-        uses: ./.github/actions/github-actions-p4
+        uses: ./.github/actions/github-actions-p4/js
         id: client
         with:
           command: client
           arguments: -i
           spec: |
-            Client:	github-actions-p4
+            Client:	github-actions-p4-${{ matrix.os }}
             Owner: ci
             Description:
               Created by ci
-            Root:	/github/home
-            Options:	allwrite noclobber nocompress unlocked modtime rmdir
+            Root:	$GITHUB_WORKSPACE/workspace
+            Options:	noallwrite noclobber nocompress unlocked modtime rmdir
             SubmitOptions:	leaveunchanged
             LineEnd:	local
             View:
-              //demo/... //github-actions-p4/demo/...
-
-      - name: chmod
-        run: |
-          sudo chmod -R 755 /home/runner/work/_temp/_github_home/
+              //demo/... //github-actions-p4-${{ matrix.os }}/demo/...
 
       - name: p4 sync
-        uses: ./.github/actions/github-actions-p4
+        uses: ./.github/actions/github-actions-p4/js
         id: sync
         env:
-          P4CLIENT: github-actions-p4
+          P4CLIENT: github-actions-p4-${{ matrix.os }}
         with:
           command: sync
           arguments: -f
@@ -81,16 +89,16 @@ jobs:
       - uses: actions/setup-node@v2
         with:
           node-version: 14.14.0
-
+          
       - name: Install dependencies
         run: |
-          sudo chmod -R 755 /home/runner/work/_temp/_github_home/
-          cd /home/runner/work/_temp/_github_home/demo
-          sudo yarn
-          sudo yarn run build
+          cd $GITHUB_WORKSPACE/workspace/demo
+          yarn
+          yarn run build
 
       - name: Deploy
+        if: matrix.os == 'ubuntu-20.04'
         uses: JamesIves/github-pages-deploy-action@v4.2.3
         with:
           branch: gh-pages
-          folder: /home/runner/work/_temp/_github_home/demo/dist
+          folder: /home/runner/work/github-actions-demo-indie/github-actions-demo-indie/workspace/demo/dist
