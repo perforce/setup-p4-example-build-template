@@ -33,26 +33,26 @@ jobs:
         uses: actions/checkout@v2
         with:
           repository: perforce/github-actions-p4
-          ref: js
+          ref: master
           token: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
           path: ./.github/actions/github-actions-p4
 
       - name: p4 setup
-        uses: ./.github/actions/github-actions-p4/js
+        uses: ./.github/actions/github-actions-p4
         id: setup
         with:
           command: setup
           p4_version: 21.2
 
       - name: p4 trust
-        uses: ./.github/actions/github-actions-p4/js
+        uses: ./.github/actions/github-actions-p4
         id: trust
         with:
           command: trust
           arguments: -y
 
       - name: p4 login
-        uses: ./.github/actions/github-actions-p4/js
+        uses: ./.github/actions/github-actions-p4
         id: login
         with:
           command: login          
@@ -60,7 +60,7 @@ jobs:
           P4PASSWD: ${{ secrets.P4PASSWD }}  
 
       - name: p4 client
-        uses: ./.github/actions/github-actions-p4/js
+        uses: ./.github/actions/github-actions-p4
         id: client
         with:
           command: client
@@ -78,7 +78,7 @@ jobs:
               //demo/... //github-actions-p4-${{ matrix.os }}/demo/...
 
       - name: p4 sync
-        uses: ./.github/actions/github-actions-p4/js
+        uses: ./.github/actions/github-actions-p4
         id: sync
         env:
           P4CLIENT: github-actions-p4-${{ matrix.os }}
