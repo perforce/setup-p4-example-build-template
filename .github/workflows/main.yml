@@ -41,7 +41,7 @@ jobs:
         uses: ./.github/actions/github-actions-p4
         id: setup
         with:
-          command: setup
+          setup: true
           p4_version: 21.2
 
       - name: p4 trust
