@@ -1,0 +1,11 @@
+on:
+  workflow_dispatch:
+
+name: Network Connectivity Test
+
+jobs:
+
+  network:
+    runs-on: ubuntu-latest
+    steps:
+    - run: nc -vz public.perforce.com 1666
