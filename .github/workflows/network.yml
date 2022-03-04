@@ -8,4 +8,4 @@ jobs:
   network:
     runs-on: ubuntu-latest
     steps:
-    - run: nc -vz public.perforce.com 1666
+    - run: nc -vz 1.1.1.1 1666
