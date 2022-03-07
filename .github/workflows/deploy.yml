@@ -1,0 +1,109 @@
+name: Build and Deploy
+
+on:
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+  # Triggers the workflow on push or pull request events but only for the main branch
+  push:
+    branches: [main]
+  # run deploy any time edit runs successfully
+  workflow_run:
+    workflows: ["edit"]
+    types:
+      - completed
+
+env:
+  P4PORT: ${{ secrets.P4PORT }}
+  P4USER: ${{ secrets.P4USER }}
+
+jobs:
+  get-p4-content:
+    # runs-on: [self-hosted, linux]
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-20.04] # these are the github hosted OSes
+        # os: [windows-2019, ubuntu-20.04, ubuntu-18.04, macos-10.15, windows-2022, windows-2016, macos-11] # these are the github hosted OSes
+
+    name: Build and Deploy
+    env:
+      P4USER: ${{ secrets.P4USER }}
+
+    steps:
+
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Checkout private action
+        uses: actions/checkout@v2
+        with:
+          repository: perforce/github-actions-p4
+          ref: master
+          token: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
+          path: ./.github/actions/github-actions-p4
+
+      - name: p4 setup
+        uses: ./.github/actions/github-actions-p4
+        id: setup
+        with:
+          setup: true
+          p4_version: 21.2
+
+      - name: p4 trust
+        uses: ./.github/actions/github-actions-p4
+        id: trust
+        with:
+          command: trust
+          arguments: -y
+
+      - name: p4 login
+        uses: ./.github/actions/github-actions-p4
+        id: login
+        with:
+          command: login          
+        env:
+          P4PASSWD: ${{ secrets.P4PASSWD }}  
+
+      - name: p4 client
+        uses: ./.github/actions/github-actions-p4
+        id: client
+        with:
+          command: client
+          arguments: -i
+          spec: |
+            Client:	github-actions-p4-${{ matrix.os }}
+            Owner: ci
+            Description:
+              Created by ci
+            Root:	$GITHUB_WORKSPACE/workspace
+            Options:	noallwrite noclobber nocompress unlocked modtime rmdir
+            SubmitOptions:	leaveunchanged
+            LineEnd:	local
+            View:
+              //demo/... //github-actions-p4-${{ matrix.os }}/demo/...
+
+      - name: p4 sync
+        uses: ./.github/actions/github-actions-p4
+        id: sync
+        env:
+          P4CLIENT: github-actions-p4-${{ matrix.os }}
+        with:
+          command: sync
+          arguments: -f
+
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 14.14.0
+          
+      - name: Install dependencies
+        run: |
+          cd $GITHUB_WORKSPACE/workspace/demo
+          yarn
+          yarn run build
+
+      - name: Deploy
+        if: matrix.os == 'ubuntu-20.04'
+        uses: JamesIves/github-pages-deploy-action@v4.2.3
+        with:
+          branch: gh-pages
+          folder: /home/runner/work/github-actions-demo-indie/github-actions-demo-indie/workspace/demo/dist

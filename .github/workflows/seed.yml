@@ -1,0 +1,74 @@
+name: Seed data into Helix Core
+
+on:
+  workflow_dispatch:
+
+env:
+  P4PORT: ${{ secrets.P4PORT }}
+  P4USER: ${{ secrets.P4USER }}
+
+jobs:
+  seed:
+    runs-on: ubuntu-latest
+    name: Seed
+    steps:
+
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Checkout private action
+        uses: actions/checkout@v2
+        with:
+          repository: perforce/setup-p4
+          ref: master
+          token: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
+          path: ./.github/actions/setup-p4
+
+      - name: p4 trust
+        uses: ./.github/actions/setup-p4
+        with:
+          command: trust
+          arguments: -y
+
+      - name: p4 login
+        uses: ./.github/actions/setup-p4
+        with:
+          command: login          
+        env:
+          P4PASSWD: ${{ secrets.P4PASSWD }}  
+
+      - name: p4 client
+        uses: ./.github/actions/setup-p4
+        with:
+          command: client
+          arguments: -i
+          spec: |
+            Client:	github-actions-p4
+            Owner: ci
+            Description:
+              Created by ci
+            Root:	$GITHUB_WORKSPACE
+            Options:	noallwrite noclobber nocompress unlocked modtime rmdir
+            SubmitOptions:	leaveunchanged
+            LineEnd:	local
+            View:
+              //depot/... //github-actions-p4/...
+
+      - name: p4 add
+        uses: ./.github/actions/setup-p4
+        env:
+          P4CLIENT: github-actions-p4
+        with:
+          command: add
+          arguments: ...
+          working_directory: "$GITHUB_WORKSPACE"
+
+      - name: p4 submit
+        uses: ./.github/actions/setup-p4
+        env:
+          P4CLIENT: github-actions-p4
+        with:
+          command: submit
+          global_options: -I
+          working_directory: "$GITHUB_WORKSPACE"
+          arguments: -d "Seeding data from GitHub to Helix Core"

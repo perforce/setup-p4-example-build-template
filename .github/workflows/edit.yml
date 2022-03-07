@@ -1,28 +1,16 @@
-name: Build and Deploy
+name: Edit
 
 on:
-  # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
-  # Triggers the workflow on push or pull request events but only for the main branch
-  push:
-    branches: [main]
 
 env:
   P4PORT: ${{ secrets.P4PORT }}
   P4USER: ${{ secrets.P4USER }}
 
 jobs:
-  get-p4-content:
-    # runs-on: [self-hosted, linux]
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-20.04] # these are the github hosted OSes
-        # os: [windows-2019, ubuntu-20.04, ubuntu-18.04, macos-10.15, windows-2022, windows-2016, macos-11] # these are the github hosted OSes
-
-    name: Build and Deploy
-    env:
-      P4USER: ${{ secrets.P4USER }}
+  edit:
+    runs-on: ubuntu-latest
+    name: Edit
 
     steps:
 
@@ -36,13 +24,6 @@ jobs:
           ref: master
           token: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
           path: ./.github/actions/github-actions-p4
-
-      - name: p4 setup
-        uses: ./.github/actions/github-actions-p4
-        id: setup
-        with:
-          setup: true
-          p4_version: 21.2
 
       - name: p4 trust
         uses: ./.github/actions/github-actions-p4
@@ -66,7 +47,7 @@ jobs:
           command: client
           arguments: -i
           spec: |
-            Client:	github-actions-p4-${{ matrix.os }}
+            Client:	github-actions-p4
             Owner: ci
             Description:
               Created by ci
@@ -75,7 +56,7 @@ jobs:
             SubmitOptions:	leaveunchanged
             LineEnd:	local
             View:
-              //demo/... //github-actions-p4-${{ matrix.os }}/demo/...
+              //demo/... //github-actions-p4/demo/...
 
       - name: p4 sync
         uses: ./.github/actions/github-actions-p4
@@ -86,15 +67,21 @@ jobs:
           command: sync
           arguments: -f
 
-      - uses: actions/setup-node@v2
-        with:
-          node-version: 14.14.0
           
-      - name: Install dependencies
+      - name: Edit Site
         run: |
-          cd $GITHUB_WORKSPACE/workspace/demo
-          yarn
-          yarn run build
+          echo "Making edit to site"
+
+      - name: p4 submit
+        uses: ./.github/actions/setup-p4
+        env:
+          P4CLIENT: github-actions-p4
+        with:
+          command: submit
+          global_options: -I
+          working_directory: "/Users/andyboutte/r/github-actions-demo-indie/base/"
+          arguments: -d "Seeding data from Helix Core to GitHub"
+
 
       - name: Deploy
         if: matrix.os == 'ubuntu-20.04'
