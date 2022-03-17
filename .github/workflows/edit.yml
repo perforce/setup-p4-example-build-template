@@ -1,0 +1,105 @@
+name: Edit
+
+on: 
+  workflow_dispatch:
+    inputs:
+      color:
+        description: 'Background color of website'     
+        required: true
+        default: '777777'
+
+env:
+  P4PORT: ${{ secrets.P4PORT }}
+  P4USER: ${{ secrets.P4USER }}
+
+jobs:
+  edit:
+    runs-on: ubuntu-latest
+    name: Edit
+
+    steps:
+
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Checkout private action
+        uses: actions/checkout@v2
+        with:
+          repository: perforce/setup-p4
+          ref: master
+          token: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
+          path: ./.github/actions/setup-p4
+
+      - name: p4 trust
+        uses: ./.github/actions/setup-p4
+        id: trust
+        with:
+          command: trust
+          arguments: -y
+
+      - name: p4 login
+        uses: ./.github/actions/setup-p4
+        id: login
+        with:
+          command: login          
+        env:
+          P4PASSWD: ${{ secrets.P4PASSWD }}  
+
+      - name: p4 client
+        uses: ./.github/actions/setup-p4
+        id: client
+        with:
+          command: client
+          arguments: -i
+          spec: |
+            Client:	github-actions-p4
+            Owner: ci
+            Description:
+              Created by ci
+            Root:	$GITHUB_WORKSPACE
+            Options:	noallwrite noclobber nocompress unlocked modtime rmdir
+            SubmitOptions:	leaveunchanged
+            LineEnd:	local
+            View:
+              //demo/... //github-actions-p4/base/...
+
+      - name: p4 sync
+        uses: ./.github/actions/setup-p4
+        id: sync
+        env:
+          P4CLIENT: github-actions-p4
+        with:
+          command: sync
+          arguments: -f
+
+      - name: Checkout files for editing
+        uses: ./.github/actions/setup-p4
+        env:
+          P4CLIENT: github-actions-p4
+        with:
+          command: edit
+          arguments: base/index.html
+
+          
+      - name: Edit Site
+        run: |
+          echo "Making edit to site"
+          sed -i "s/<body style=.*/<body style=\"background: #${{ github.event.inputs.color }}\">/g" base/index.html
+
+      - name: Add files in GitHub to changelist
+        uses: ./.github/actions/setup-p4
+        env:
+          P4CLIENT: github-actions-p4
+        with:
+          command: add
+          arguments: ...
+          working_directory: $GITHUB_WORKSPACE/base
+
+      - name: p4 submit
+        uses: ./.github/actions/setup-p4
+        env:
+          P4CLIENT: github-actions-p4
+        with:
+          command: submit
+          global_options: -I
+          arguments: -d "Submitting files changed during edit"
