@@ -1,0 +1,81 @@
+name: Build and Deploy
+
+on:
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+  # Triggers the workflow on push or pull request events but only for the main branch
+  push:
+    branches: [main]
+
+env:
+  P4PORT: ${{ secrets.P4PORT }}
+  P4USER: ${{ secrets.P4USER }}
+
+jobs:
+  build-and-deplot:
+    runs-on: ubuntu-latest
+
+    name: Build and Deploy
+
+    steps:
+
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: p4 trust
+        uses: perforce/setup-p4@v1
+        id: trust
+        with:
+          command: trust
+          arguments: -y
+
+      - name: p4 login
+        uses: perforce/setup-p4@v1
+        id: login
+        with:
+          command: login          
+        env:
+          P4PASSWD: ${{ secrets.P4PASSWD }}  
+
+      - name: Create Client Workspace
+        uses: perforce/setup-p4@v1
+        with:
+          command: client
+          arguments: -i
+          spec: |
+            Client:	github-actions-p4
+            Owner: ci
+            Description:
+              Created by ci
+            Root:	$GITHUB_WORKSPACE
+            Options:	noallwrite noclobber nocompress unlocked modtime rmdir
+            SubmitOptions:	leaveunchanged
+            LineEnd:	local
+            View:
+              //demo/... //github-actions-p4/base/...
+
+      - name: p4 sync
+        uses: perforce/setup-p4@v1
+        id: sync
+        env:
+          P4CLIENT: github-actions-p4
+        with:
+          command: sync
+          arguments: -f
+
+      - name: Build
+        run: |
+          echo "This is where your build steps would happen"
+
+      - name: Deploy
+        uses: JamesIves/github-pages-deploy-action@v4.2.3
+        with:
+          branch: gh-pages
+          folder: base/
+
+      - name: Create annotation that contains GitHub Pages URL
+        run: |
+          URL=$(gh api -X GET /repos/$GITHUB_REPOSITORY/pages | jq -r '.html_url')
+          echo "::notice::Your GitHub Pages URL is: $URL"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
