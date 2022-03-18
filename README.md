@@ -18,7 +18,7 @@
 
 ## Summary
 
-This project is setup to be a demonstration of the `[setup-p4](https://github.com/perforce/setup-p4)` GitHub Action.  The project is based on a simple HTML site that is located in this repository under the `base` directory.  
+This project is setup to be a demonstration of the [setup-p4](https://github.com/perforce/setup-p4) GitHub Action.  The project is based on a simple HTML site that is located in this repository under the `base` directory.  
 
 There are three GitHub Action Workflows stored in this repository under `.github/workflows/` that will perform the following high level steps:
 
