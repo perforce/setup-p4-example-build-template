@@ -45,7 +45,8 @@ There are three GitHub Action Workflows stored in this repository under `.github
 * Publish the artifacts to GitHub Pages
 
 
-
+## Workflow Diagram
+![Workflow Diagram](/images/workflow.png)
 
 ## Usage
 
